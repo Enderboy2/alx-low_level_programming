@@ -1,46 +1,85 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include "main.h"
 
 /**
- * isInteger - checks if s is an integer
- * @s: string to check
- * Return: 0 or 1
+ * _atoi - converts a string to an integer
+ * @s: string to be converted
+ *
+ * Return: the int converted from the string
  */
-
-int isInteger(const char *s)
+int _atoi(char *s)
 {
-	int i = 0;
+	int i, d, n, len, f, digit;
 
-	while (s[i] != '\0')
+	i = 0;
+	d = 0;
+	n = 0;
+	len = 0;
+	f = 0;
+	digit = 0;
+
+	while (s[len] != '\0')
+		len++;
+
+	while (i < len && f == 0)
 	{
-		if (s[i] < '0' || s[i] > '9')
-			return (1);
+		if (s[i] == '-')
+			++d;
+
+		if (s[i] >= '0' && s[i] <= '9')
+		{
+			digit = s[i] - '0';
+			if (d % 2)
+				digit = -digit;
+			n = n * 10 + digit;
+			f = 1;
+			if (s[i + 1] < '0' || s[i + 1] > '9')
+				break;
+			f = 0;
+		}
 		i++;
 	}
-	return (0);
+
+	if (f == 0)
+		return (0);
+
+	return (n);
 }
 
 /**
- * main - adds positive numbers
- * @argc: int
- * @argv: list
- * Return: 0
+ * main - adds two positive number
+ * @argc: number of arguments
+ * @argv: array of arguents
+ *
+ * Return: 0 (Success), or 1 (Success)
  */
-
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
-	int sum = 0;
+	int sum, num, i, j, k;
 
-	while (--argc)
+	sum = 0;
 
+	for (i = 1; i < argc; i++)
 	{
-		if (isInteger(argv[argc]))
+		for (j = 0; argv[i][j] != '\0'; j++)
 		{
-			printf("Error\n");
-			return (1);
+			if (argv[i][j] > '9' || argv[i][j] < '0')
+			{
+				puts("Error");
+				return (1);
+			}
 		}
-		sum += atoi(argv[argc]);
 	}
-	printf("%i\n", sum);
+
+	for (k = 1; k < argc; k++)
+	{
+		num = _atoi(argv[k]);
+		if (num >= 0)
+		{
+			sum += num;
+		}
+	}
+
+	printf("%d\n", sum);
 	return (0);
 }
